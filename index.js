@@ -33,7 +33,9 @@ function checkForEmptyField(inputArr) {
 }
 
 function checkLength(input, min, max){
-  if (input.value.length < min){
+  if (input.value.length === 0){
+    showError(input, `${getFieldName(input)} is required`);
+  } else if (input.value.length < min){
     showError(input, `${getFieldName(input)} must be at least ${min} characters`)
   } else if (input.value.length > max){
     showError(input, `${getFieldName(input)} can't be longer than ${max} characters`)
@@ -42,10 +44,23 @@ function checkLength(input, min, max){
   }
 }
 
+function checkPasswordMatch(password, password2){
+  if (password.value == password2.value
+    && password.value.length !== 0){
+    showSuccess(password)
+    showSuccess(password2)
+  }
+
+  else {
+    showError(password2, `Passwords must match`)
+  }
+}
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   checkForEmptyField([username, email, password, password2]);
   checkLength(username, 3, 15)
   checkLength(password, 6, 20)
-  
+  checkPasswordMatch(password, password2)
+
 });
